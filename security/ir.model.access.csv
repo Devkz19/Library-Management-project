@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_library_book,library.book,model_library_book,,1,1,1,1
+access_library_member,library.member,model_library_member,,1,1,1,1
+access_library_issue,library.issue,model_library_issue,,1,1,1,1
+
+access_library_dashboard_user,access.library.dashboard.user,model_library_dashboard,,1,0,1,0
+
+access_library_issue_return_wizard,access.library.issue.return.wizard,model_library_issue_return_wizard,base.group_user,1,1,1,1

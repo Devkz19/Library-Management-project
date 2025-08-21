@@ -1,0 +1,124 @@
+<odoo>
+    <!-- List View -->
+    <record id="view_library_issue_list" model="ir.ui.view">
+        <field name="name">library.issue.list</field>
+        <field name="model">library.issue</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="book_id" />
+                <field name="member_id" />
+                <field name="issue_type" />
+                <field name="issue_date" />
+                <field name="return_date" />
+                <field name="state" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_library_issue_form" model="ir.ui.view">
+        <field name="name">library.issue.form</field>
+        <field name="model">library.issue</field>
+        <field name="arch" type="xml">
+            <form string="Issue or Purchase">
+                <header>
+                    <button name="action_send_issue_email"
+                    type="object"
+                    string="Send Issue Email"
+                    class="btn-primary"
+                    icon="fa-envelope"/>
+                </header>
+                <sheet>
+                   <header>
+                    <button name="action_confirm" type="object" string="Confirm"
+                        class="btn btn-primary"
+                        invisible="state != 'draft'" />
+
+                    <button name="%(library_management.action_library_issue_return_wizard)d"
+                        type="action"
+                        string="Return"
+                        class="btn-secondary"
+                        invisible="issue_type != 'issue' or state != 'confirmed'" />
+
+                    <field name="state" widget="statusbar"
+                        statusbar_visible="draft,confirmed,returned" />
+                </header>
+                    <notebook>
+                        <!-- details -->
+                        <page string="Details">
+                            <group>
+                                <field name="book_id" />
+                                <field name="member_id" />
+                                <field name="issue_type" />
+                                <field name="issue_date" />
+                                <field name="return_date" invisible="issue_type != 'issue' "  />
+                                <field name="signature" widget="signature" options="{'width': 400, 'height': 150}" />
+                            </group>
+                        </page>
+                        <!-- payment -->
+                        <page string="Payment">
+                            <group>
+                                <field name="price_to_pay" readonly="1" />
+                                <field name="payment_status" />
+                                <field name="payment_date" invisible="payment_status != 'paid'" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <chatter>
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_library_issue_kanban" model="ir.ui.view">
+        <field name="name">library.issue.kanban</field>
+        <field name="model">library.issue</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_small_column" default_group_by="state">
+                <field name="book_id" />
+                <field name="member_id" />
+                <field name="issue_date" />
+                <field name="return_date" />
+                <field name="state" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <strong>Book:</strong>
+                            <t t-esc="record.book_id.value" />
+                            <br />
+                            <strong>Member:</strong>
+                            <t t-esc="record.member_id.value" />
+                            <br />
+                            <strong>Issued:</strong>
+                            <t t-esc="record.issue_date.value" />
+                            <br />
+                            <strong>Return:</strong>
+                            <t t-esc="record.return_date.value" />
+                            <br />
+                            <strong>Status:</strong>
+                            <t t-esc="record.state.value" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_library_issue" model="ir.actions.act_window">
+        <field name="name">Issued Books</field>
+        <field name="res_model">library.issue</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                There are no records yet.
+            </p>
+        </field>
+    </record>
+</odoo>

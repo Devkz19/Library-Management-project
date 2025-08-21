@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_member_issued_books_template">
+  <t t-call="web.html_container">
+    <t t-foreach="docs" t-as="member">
+      <t t-call="web.external_layout">
+        <div class="page">
+          <h2 style="text-align:center; background-color:#3f51b5; color:white; padding:10px; border-radius:5px;">
+            Books Issued by: <t t-esc="member.name"/>
+          </h2>
+
+          <p><strong>Email:</strong> <t t-esc="member.email"/></p>
+          <p><strong>Phone:</strong> <t t-esc="member.phone"/></p>
+          <br/>
+
+          <table class="table table-sm" style="width:100%; border:1px solid #ccc;" border="1">
+            <thead>
+              <tr style="background-color:#eee;">
+                <th>Book Title</th>
+                <th>Issue Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-foreach="member.issue_ids" t-as="issue">
+                <tr>
+                  <td><t t-esc="issue.book_id.name"/></td>
+                  <td><t t-esc="issue.issue_date"/></td>
+                  <td><t t-esc="issue.return_date"/></td>
+                  <td><t t-esc="issue.state"/></td>
+                </tr>
+              </t>
+            </tbody>
+          </table>
+        </div>
+      </t>
+    </t>
+  </t>
+</template>
+
+<record id="action_report_member_issued_books" model="ir.actions.report">
+  <field name="name">Issued Books by Member</field>
+  <field name="model">library.member</field>
+  <field name="report_type">qweb-pdf</field>
+  <field name="report_name">library_management.report_member_issued_books_template</field>
+  <field name="report_file">library_management.report_member_issued_books_template</field>
+  <field name="print_report_name">'Issued Books - %s' % (object.name)</field>
+</record>
+
+
+</odoo>

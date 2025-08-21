@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Dashboard Form View -->
+    <record id="view_library_dashboard_form" model="ir.ui.view">
+        <field name="name">library.dashboard.form</field>
+        <field name="model">library.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Library Dashboard">
+                <sheet>
+                    <!-- Stats Cards Row -->
+                    <div class="row">
+                        <!-- Total Books -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Total Books</h5>
+                                    <h3 class="card-text">
+                                        <field name="total_books" readonly="1" />
+                                    </h3>
+                                    <a type="action" name="library_management.action_library_book" class="btn btn-link">More info</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Total Members -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Total Members</h5>
+                                    <h3 class="card-text">
+                                        <field name="total_members" readonly="1" />
+                                    </h3>
+                                    <a type="action" name="library_management.action_library_member" class="btn btn-link">More info</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Issued Books -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Issued Books</h5>
+                                    <h3 class="card-text">
+                                        <field name="total_issued" readonly="1" />
+                                    </h3>
+                                    <a type="action" name="library_management.action_library_issue" class="btn btn-link">More info</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Returned Books -->
+                        <div class="col-md-3 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">Returned Books</h5>
+                                    <h3 class="card-text">
+                                        <field name="total_returned" readonly="1" />
+                                    </h3>
+                                    <a type="action" name="library_management.action_library_issue" class="btn btn-link">More info</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row for Most Issued and Due Today -->
+                    <div class="row mt-4">
+                        <!-- Most Issued Books -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Most Issued Books</h5>
+                                </div>
+                                <div class="card-body">
+                                    <field name="most_issued_books" readonly="1" widget="text"
+                                        class="o_text_preformatted" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Books Due Today -->
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Books Due Today</h5>
+                                </div>
+                                <div class="card-body">
+                                    <field name="books_due_today" readonly="1" widget="text"
+                                        class="o_text_preformatted" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_library_dashboard" model="ir.actions.act_window">
+        <field name="name">Library Dashboard</field>
+        <field name="res_model">library.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="target">current</field>
+        <field name="view_id" ref="view_library_dashboard_form" />
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_library_dashboard" name="Dashboard"
+    parent="menu_library_root"
+    action="library_management.action_library_dashboard"
+    sequence="1" />
+</odoo>

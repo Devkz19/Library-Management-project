@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- List View -->
+    <record id="view_library_book_list" model="ir.ui.view">
+        <field name="name">library.book.list</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name" />
+                <field name="author" />
+                <field name="isbn" />
+                <field name="publication_date" />
+                <field name="num_copies" />
+                <field name="available_copies" readonly="1" />
+                <field name="category" />
+                <field name="available" />
+                <field name="purchase_price" />
+                <field name="issue_price" />
+            </list>
+        </field>
+    </record>
+
+    <!-- Form View with Notebook and Chatter -->
+    <record id="view_library_book_form" model="ir.ui.view">
+        <field name="name">library.book.form</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <form>
+               <header>   
+                <button name="print_issued_users_report"
+                        type="object"
+                        string="Print Issued Users"
+                        class="btn-primary"
+                        icon="fa-print"/>
+                
+                <button name="action_export_book_excel"
+                        string="Export to Excel"
+                        type="object"
+                        class="btn-secondary"
+                        icon="fa-file-excel-o"/>
+                </header>
+
+
+                <sheet>
+                    <notebook>
+                        <!-- Tab 1: Book Info -->
+                        <page string="Book Info">
+                            <group string="Basic Details">
+                                <field name="name" />
+                                <field name="author" />
+                                <field name="isbn" />
+                                <field name="publication_date" />
+                            </group>
+                        </page>
+
+                        <!-- Tab 2: Inventory -->
+                        <page string="Inventory">
+                            <group>
+                                <field name="num_copies" />
+                                <field name="available_copies" readonly="1" />
+                                <field name="available" />
+                            </group>
+                        </page>
+
+                        <!-- Tab 3: Category -->
+                        <page string="Category">
+                            <group>
+                                <field name="category" />
+                            </group>
+                        </page>
+
+                        <!-- Tab 4: Pricing -->
+                        <page string="Pricing">
+                            <group>
+                                <field name="purchase_price" />
+                                <field name="issue_price" />
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+
+                <!-- Chatter Section -->
+                <chatter>
+                    <field name="message_follower_ids" widget="mail_followers" />
+                    <field name="activity_ids" widget="mail_activity" />
+                    <field name="message_ids" widget="mail_thread" />
+                </chatter>
+            </form>
+        </field>
+    </record>
+
+    <!-- Kanban View -->
+    <record id="view_library_book_kanban" model="ir.ui.view">
+        <field name="name">library.book.kanban</field>
+        <field name="model">library.book</field>
+        <field name="arch" type="xml">
+            <kanban>
+                <field name="name" />
+                <field name="author" />
+                <field name="available" />
+                <field name="category" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click o_kanban_record">
+                            <strong>
+                                <field name="name" />
+                            </strong>
+                            <br />
+                            <span>Author: <field name="author" /></span>
+                            <br />
+                            <span>Available: <field name="available" /></span>
+                            <br />
+                            <span>Category: <field name="category" /></span>
+                            <br />
+                            <span>Issue Price: <field name="issue_price" /></span>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_library_book" model="ir.actions.act_window">
+        <field name="name">Books</field>
+        <field name="res_model">library.book</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                There are no staff records yet.
+            </p>
+        </field>
+    </record>
+</odoo>

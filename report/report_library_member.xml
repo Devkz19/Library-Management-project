@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- QWeb Template for Library Member Report -->
+    <template id="library_member_qweb_template">
+    <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="member">
+            <div class="page"> <!-- NEW: Page wrap starts here -->
+                <t t-call="web.external_layout">
+
+                    <h2 style="text-align:center; background-color:#3f51b5; color:white; padding:10px; border-radius:5px;">
+                        Library Member Report
+                    </h2>
+
+                    <div style="border:1px solid #ddd; border-radius:10px; padding:20px;">
+                        <div style="display:flex; gap:30px; align-items:flex-start;">
+
+                            <!-- Photo Section -->
+                            <div style="flex:1; text-align:center;">
+                                <t t-if="member.photo">
+                                    <img t-att-src="'data:image/png;base64,%s' % member.photo.decode('utf-8')"
+                                         style="width:150px; height:auto; border-radius:8px; border:1px solid #ccc;"
+                                         sanitize="False" />
+                                </t>
+                                <t t-else="">
+                                    <p><em>No Photo Available</em></p>
+                                </t>
+                            </div>
+
+                            <!-- Profile Details -->
+                            <div style="flex:2;">
+                                <h4 style="margin-bottom:10px;">User Profile Details:</h4>
+                                <table style="width:100%; font-size:14px; line-height:1.8;">
+                                    <tr>
+                                        <td><strong>Membership ID:</strong></td>
+                                        <td><span t-field="member.membership_id" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Name:</strong></td>
+                                        <td><span t-field="member.name" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Email:</strong></td>
+                                        <td><span t-field="member.email" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Phone:</strong></td>
+                                        <td><span t-field="member.phone" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>User Type:</strong></td>
+                                        <td><span t-field="member.user_type" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Membership Status:</strong></td>
+                                        <td><span t-field="member.membership_status" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Date Joined:</strong></td>
+                                        <td><span t-field="member.date_joined" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Address:</strong></td>
+                                        <td>
+                                            <span t-field="member.street" />, 
+                                            <span t-field="member.city" />, 
+                                            <span t-field="member.state" /> - 
+                                            <span t-field="member.zip_code" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </t>
+            </div> <!-- Page wrap ends here -->
+        </t>
+    </t>
+</template>
+
+        <!-- Report Action for Library Member -->
+        <record id="action_report_library_member" model="ir.actions.report">
+            <field name="name">Library Member Report</field>
+            <field name="model">library.member</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">library_management.library_member_qweb_template</field>
+            <field name="report_file">library_management.library_member_qweb_template</field>
+            <field name="print_report_name">'Library Member - %s' % (object.name)</field>
+            <field name="binding_model_id" ref="model_library_member" />
+            <field name="binding_type">report</field>
+            <field name="multi">True</field>
+        </record>
+    </data>
+</odoo>

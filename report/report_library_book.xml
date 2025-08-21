@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- QWeb Template for Library Book Report -->
+    <template id="library_book_qweb_template">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="book">
+          <t t-call="web.external_layout">
+            <div class="page">
+              <h2 style="text-align:center; background-color:#3f51b5; color:white; padding:10px; border-radius:5px;">Library Book Report</h2>
+
+              <div style="margin-top: 20px;">
+                <table class="table table-sm" style="width:100%; font-size:14px;">
+                  <tr><th style="width:40%;">Title:</th><td><span t-field="book.name"/></td></tr>
+                  <tr><th>Author:</th><td><span t-field="book.author"/></td></tr>
+                  <tr><th>ISBN:</th><td><span t-field="book.isbn"/></td></tr>
+                  <tr><th>Publication Date:</th><td><span t-field="book.publication_date"/></td></tr>
+                  <tr><th>Category:</th><td><span t-field="book.category"/></td></tr>
+                  <tr><th>Available:</th><td><t t-esc="'Yes' if book.available else 'No'"/></td></tr>
+                  <tr><th>Total Copies:</th><td><span t-field="book.num_copies"/></td></tr>
+                  <tr><th>Available Copies:</th><td><span t-esc="book.available_copies or 0"/></td></tr>
+                  <tr><th>Times Issued:</th><td><span t-esc="book.times_issued or 0"/></td></tr>
+                  <tr><th>Purchase Price:</th><td><span t-field="book.purchase_price"/></td></tr>
+                  <tr><th>Issue Price:</th><td><span t-field="book.issue_price"/></td></tr>
+                </table>
+              </div>
+
+            </div>
+          </t>
+        </t>
+      </t>
+    </template>
+
+    <!-- Report Action for Library Book -->
+    <record id="action_report_library_book" model="ir.actions.report">
+      <field name="name">Library Book Report</field>
+      <field name="model">library.book</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">library_management.library_book_qweb_template</field>
+      <field name="report_file">library_management.library_book_qweb_template</field>
+      <field name="print_report_name">'Library Book - %s' % (object.name)</field>
+      <field name="binding_model_id" ref="model_library_book"/>
+      <field name="binding_type">report</field>
+      <field name="multi">True</field>
+    </record>
+  </data>
+</odoo>

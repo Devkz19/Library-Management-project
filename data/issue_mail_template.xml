@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="mail_template_library_book_issue" model="mail.template">
+        <field name="name">Library Book Issue Email</field>
+        <field name="model_id" ref="model_library_issue"/>
+        <field name="subject">Book Issued: {{ object.book_id.name }}</field>
+        <field name="email_to">{{ object.member_id.email }}</field>
+        <field name="email_from">{{ user.email or 'noreply@library.com' }}</field>
+        <field name="description">Email sent to the member after a book is issued</field>
+            
+        <field name="body_html" type="html">
+            <div style="font-family: Arial, sans-serif; font-size: 14px; color: #333;">
+                <p>Dear <strong><t t-out="object.member_id.name or 'Member'"/></strong>,</p>
+                <p>This is to inform you that the following book has been successfully issued to you:</p>
+                <ul>
+                    <li><strong>Book Title:</strong> <t t-out="object.book_id.name"/></li>
+                    <li><strong>Issue Date:</strong> <t t-out="object.issue_date"/></li>
+                    <li><strong>Return Date:</strong> <t t-out="object.return_date"/></li>
+                </ul>
+                <p>Kindly ensure the book is returned on or before the due date to avoid any penalties.</p>
+                <p>Thank you for using our library services.</p>
+                <p>Best regards,<br/>
+                <strong><t t-out="user.company_id.name or 'Library Management Team'"/></strong></p>
+            </div>
+        </field>
+
+        <field name="auto_delete" eval="True"/>
+    </record>
+</odoo>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- QWeb Template for Library Issue Report -->
+    <template id="library_issue_qweb_template">
+      <t t-call="web.html_container">
+        <t t-foreach="docs" t-as="o">
+          <t t-call="web.external_layout">
+            <div class="page">
+                <h2 style="text-align:center; background-color:#3f51b5; color:white; padding:10px; border-radius:5px;">Purchase / Issue Report - Library System</h2>
+              <div style="border:1px solid #ddd; border-radius:10px; padding:20px; margin-top:10px;">
+                <h4 style="margin-bottom:15px;">Transaction Details</h4>
+                <table style="width:100%; font-size:14px; line-height:1.8;">
+                  <tr><td><strong>Book:</strong></td><td><span t-field="o.book_id.name"/></td></tr>
+                  <tr><td><strong>Member:</strong></td><td><span t-field="o.member_id.name"/></td></tr>
+                  <tr><td><strong>Issue Type:</strong></td><td><span t-field="o.issue_type"/></td></tr>
+                  <tr><td><strong>Issue Date:</strong></td><td><span t-field="o.issue_date"/></td></tr>
+                  <tr><td><strong>Return Date:</strong></td>
+                    <td>
+                    <t t-if="o.issue_type == 'purchase'">
+                      Not applicable for purchases
+                    </t>
+                    <t t-else="">
+                      <span t-field="o.return_date"/>
+                    </t>
+                    </td></tr>
+                  <tr><td><strong>Total Issue Days:</strong></td>
+                      <td>
+                          <t t-if="o.return_date and o.issue_date">
+                              <t t-set="days" t-value="(o.return_date - o.issue_date).days"/>
+                              <t t-out="days"/> days
+                          </t>
+                          <t t-else="">
+                              N/A
+                          </t>
+                     </td></tr>
+                  <tr><td><strong>Payment Status:</strong></td><td><span t-field="o.payment_status"/></td></tr>
+                  <tr><td><strong>Price to Pay:</strong></td><td><span t-field="o.price_to_pay"/></td></tr>
+                  <tr><td><strong>State:</strong></td><td><span t-field="o.state"/></td></tr>
+                </table>
+
+                <br/>
+                <h4 style="margin-bottom:5px;">Member Signature:</h4>
+                <t t-if="o.signature">
+                  <img t-att-src="'data:image/png;base64,%s' % o.signature.decode('utf-8')" 
+                       sanitize="False" 
+                       style="width:400px; height:auto; border:1px solid #ccc; padding:5px; border-radius:5px;" />
+                </t>
+                <t t-else="">
+                  <p><em>(Signature Not Provided)</em></p>
+                </t>
+              </div>
+
+            </div>
+          </t>
+        </t>
+      </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_library_issue" model="ir.actions.report">
+      <field name="name">Library Issue Report</field>
+      <field name="model">library.issue</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">library_management.library_issue_qweb_template</field>
+      <field name="report_file">library_management.library_issue_qweb_template</field>
+      <field name="print_report_name">'Library Issue - %s' % (object.book_id.name)</field>
+      <field name="binding_model_id" ref="model_library_issue"/>
+      <field name="binding_type">report</field>
+      <field name="multi">True</field>
+    </record>
+    
+  </data>
+</odoo>

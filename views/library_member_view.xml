@@ -1,0 +1,137 @@
+<odoo>
+    <!-- List View -->
+    <record id="view_library_member_list" model="ir.ui.view">
+        <field name="name">library.member.list</field>
+        <field name="model">library.member</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="membership_id"/>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="membership_status"/>
+                <field name="user_type"/>
+                <field name="date_joined"/>
+            </list>
+        </field>
+    </record>
+
+   <!-- Form View -->
+<record id="view_library_member_form" model="ir.ui.view">
+    <field name="name">library.member.form</field>
+    <field name="model">library.member</field>
+    <field name="arch" type="xml">
+        <form>
+            <header>
+            <button name="print_issued_books_report"
+                    type="object"
+                    string="Print Issued Books"
+                    class="btn-primary"
+                    icon="fa-print"/>
+                    
+            <button name="action_send_welcome_email"
+            type="object"
+            string="Send Welcome Email"
+            class="btn-primary"
+            icon="fa-envelope"/>
+        
+            </header>
+
+            <sheet>
+                <notebook>
+                    <!-- Tab 1: Basic Info -->
+                    <page string="Basic Info">
+                        <group string="Membership Details">
+                            <field name="membership_id" readonly="1"/>
+                            <field name="first_name"/>
+                            <field name="middle_name"/>
+                            <field name="last_name"/>
+                            <field name="name" invisible="1"/>
+                            <field name="user_type"/>
+                        </group>
+                    </page>
+
+                    <!-- Tab 2: Contact Info -->
+                    <page string="Contact">
+                        <group>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="date_joined"/>
+                            <field name="membership_status"/>
+                        </group>
+                    </page>
+
+                    <!-- Tab 3: Address -->
+                    <page string="Address">
+                        <group>
+                            <field name="street"/>
+                            <field name="city"/>
+                            <field name="state"/>
+                            <field name="zip_code"/>
+                        </group>
+                    </page>
+
+                    <!-- Tab 4: Photo -->
+                    <page string="Photo">
+                        <group>
+                            <field name="photo" widget="image" class="oe_avatar"/>
+                        </group>
+                    </page>
+                </notebook>
+            </sheet>
+
+            <!-- Chatter -->
+            <chatter>
+                <field name="message_follower_ids" widget="mail_followers"/>
+                <field name="activity_ids" widget="mail_activity"/>
+                <field name="message_ids" widget="mail_thread"/>
+            </chatter>
+        </form>
+    </field>
+</record>
+
+
+    <!-- kanban views -->
+    <record id="view_library_member_kanban" model="ir.ui.view">
+    <field name="name">library.member.kanban</field>
+    <field name="model">library.member</field>
+    <field name="arch" type="xml">
+        <kanban class="o_kanban_dashboard">
+            <field name="name"/>
+            <field name="email"/>
+            <field name="photo"/>
+            <field name="membership_status"/>
+            <field name="user_type"/>
+            <templates>
+                <t t-name="kanban-box">
+                    <div class="o_kanban_record card shadow-sm p-2 rounded" style="text-align:center;">
+                        <div class="mb-2">
+                            <img t-att-src="kanban_image('library.member', 'photo', record.id.value)"
+                                 style="height: 80px; width: 80px; object-fit: cover; border: 2px solid #ddd;" />
+                        </div>
+                        <div>
+                            <strong style="font-size: 15px;" t-esc="record.name.value"/>
+                        </div>
+                        <div class="text-muted" t-esc="record.email.value"/>
+                        <div t-esc="record.user_type.value"/>
+                        <div>Status: <t t-esc="record.membership_status.value"/></div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+    </field>
+</record>
+
+
+    <!-- Action -->
+    <record id="action_library_member" model="ir.actions.act_window">
+        <field name="name">Members</field>
+        <field name="res_model">library.member</field>
+        <field name="view_mode">kanban,list,form</field>
+         <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                There are no staff records yet.
+            </p>
+        </field>
+    </record>
+</odoo>
