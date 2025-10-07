@@ -8,23 +8,25 @@
     'website': 'https://www.odoo.com',
     'depends': ['base','mail'],
     'data': [
+        'security/ir.model.access.csv',
         'data/library_sequence.xml',
-        'report/library_issue_report.xml',    
-        'report/report_library_book.xml',
-        'report/report_library_member.xml',
-        'report/report_library_book_issued_users.xml',
-        'report/report_member_issued_books.xml',    
         'data/issue_mail_template.xml',         
         'data/welcome_email_template.xml',
         'wizard/library_wizard_issue_return.xml',
-        'security/ir.model.access.csv',
-        'views/library_menu_view.xml',
+        # Load actions/views before menus to satisfy references
         'views/library_book_view.xml',
         'views/library_member_view.xml',
         'views/library_issue_view.xml',
         'views/library_dashboard.xml',
-     
-    ],
+        # Menus last (they reference actions above)
+        'views/library_menu_view.xml',
+        'report/library_issue_report.xml',    
+        'report/report_library_book.xml',
+        'report/report_library_member.xml',
+        'report/report_library_book_issued_users.xml',
+        'report/report_member_issued_books.xml',
+],
+
 
     'demo': [ ],
     'installable': True,

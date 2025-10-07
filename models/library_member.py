@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from datetime import date
 
 class LibraryMember(models.Model):
     _name = 'library.member'
@@ -17,6 +18,8 @@ class LibraryMember(models.Model):
     middle_name = fields.Char(tracking=True)
     last_name = fields.Char(required=True, tracking=True)
     issue_ids = fields.One2many('library.issue', 'member_id', string="Issues")
+    dob = fields.Date(string='Date of Birth')
+    age = fields.Integer(string='Age', compute='_compute_age', store=True)
 
     name = fields.Char(compute="_compute_name", store=True)
 
@@ -47,6 +50,16 @@ class LibraryMember(models.Model):
         for rec in self:
             parts = filter(None, [rec.first_name, rec.middle_name, rec.last_name])
             rec.name = " ".join(parts)
+            
+    @api.depends('dob')
+    def _compute_age(self):
+        for record in self:
+            if record.dob:
+                today = date.today()
+                record.age = today.year - record.dob.year - \
+                             ((today.month, today.day) < (record.dob.month, record.dob.day))
+            else:
+                record.age = 0        
     
     @api.model
     def create(self, vals):

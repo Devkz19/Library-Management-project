@@ -12,7 +12,7 @@ class LibraryIssueReturnWizard(models.TransientModel):
         string="Return Date",
         default=fields.Date.context_today,
         required=True,
-        tracking=True
+       
     )
 
     extra_days = fields.Integer(

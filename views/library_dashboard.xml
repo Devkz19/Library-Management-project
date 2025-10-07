@@ -104,9 +104,4 @@
         <field name="view_id" ref="view_library_dashboard_form" />
     </record>
 
-    <!-- Menu -->
-    <menuitem id="menu_library_dashboard" name="Dashboard"
-    parent="menu_library_root"
-    action="library_management.action_library_dashboard"
-    sequence="1" />
 </odoo>

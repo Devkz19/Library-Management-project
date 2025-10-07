@@ -46,6 +46,8 @@
                             <field name="first_name"/>
                             <field name="middle_name"/>
                             <field name="last_name"/>
+                            <field name="dob"/>
+                            <field name="age" readonly="1"/>
                             <field name="name" invisible="1"/>
                             <field name="user_type"/>
                         </group>

@@ -6,4 +6,7 @@
     <menuitem id="menu_library_books" name="Books" parent="menu_library_root" action="action_library_book" sequence="1"/>
     <menuitem id="menu_library_members" name="Members" parent="menu_library_root" action="action_library_member" sequence="2"/>
     <menuitem id="menu_library_issues" name="Issued Books" parent="menu_library_root" action="action_library_issue" sequence="3"/>
+
+    <!-- Dashboard submenu moved here -->
+    <menuitem id="menu_library_dashboard" name="Dashboard" parent="menu_library_root" action="action_library_dashboard" sequence="0"/>
 </odoo>
