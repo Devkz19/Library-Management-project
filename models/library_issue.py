@@ -14,6 +14,7 @@ class LibraryIssue(models.Model):
     book_id = fields.Many2one('library.book', string="Book", required=True, tracking=True)
     signature = fields.Binary("Member Signature")
     member_id = fields.Many2one('library.member', string="Member", required=True, tracking=True)
+    member_email = fields.Char(related='member_id.email')
     issue_date = fields.Date(string="Issue Date", default=fields.Date.today, tracking=True)
     return_date = fields.Date(string="Return Date", tracking=True)
     
@@ -24,6 +25,7 @@ class LibraryIssue(models.Model):
 
     issue_price = fields.Float(string="Issue Price", related='book_id.issue_price', readonly=True)
     purchase_price = fields.Float(string="Purchase Price", related='book_id.purchase_price', readonly=True)
+
 
     payment_status = fields.Selection([
         ('unpaid', 'Unpaid'),
@@ -42,6 +44,19 @@ class LibraryIssue(models.Model):
     penalty = fields.Float(string="Penalty")
 
     price_to_pay = fields.Float(string="Price to Pay", compute="_compute_price_to_pay", store=True)
+    
+    @api.constrains('issue_date', 'return_date')
+    def _check_dates(self):
+        for record in self:
+            if record.return_date and record.issue_date > record.return_date:
+                raise ValidationError("The return date cannot be before the issue date.")
+            
+    @api.onchange('member_id')
+    def _onchange_member_id(self):
+        if self.member_id:
+            self.member_email = self.member_id.email
+        else:
+            self.member_email = False        
 
     @api.depends('issue_type', 'book_id')
     def _compute_price_to_pay(self):

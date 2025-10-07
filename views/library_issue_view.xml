@@ -47,8 +47,9 @@
                         <!-- details -->
                         <page string="Details">
                             <group>
-                                <field name="book_id" />
                                 <field name="member_id" />
+                                <field name="member_email"/>
+                                <field name="book_id" />
                                 <field name="issue_type" />
                                 <field name="issue_date" />
                                 <field name="return_date" invisible="issue_type != 'issue' "  />

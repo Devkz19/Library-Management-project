@@ -1,4 +1,5 @@
 from odoo import models, fields, api, _
+from odoo.exceptions import UserError
 import base64
 import io
 import xlsxwriter
@@ -31,6 +32,17 @@ class LibraryBook(models.Model):
     ], string="Category/Genre", tracking=True)
 
     times_issued = fields.Integer("Times Issued", compute="_compute_times_issued", store=False)
+    
+    _sql_constraints = [
+            ('isbn_unique', 'UNIQUE(isbn)', 'The ISBN of the book must be unique!'),
+            ('available_copies_positive', 'CHECK(available_copies >= 0)', 'Available copies cannot be negative!'),
+        ]
+    
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_not_issued(self):
+        if self.env['library.issue'].search([('book_id', 'in', self.ids), ('state', '=', 'confirmed')]):
+            raise UserError("Cannot delete a book that is currently issued.")
+        
 
     @api.depends('num_copies')
     def _compute_available_copies(self):

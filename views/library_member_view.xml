@@ -9,6 +9,7 @@
                 <field name="name"/>
                 <field name="email"/>
                 <field name="phone"/>
+                <field name="age" readonly="1"/>
                 <field name="membership_status"/>
                 <field name="user_type"/>
                 <field name="date_joined"/>
