@@ -40,7 +40,7 @@
                         class="btn-secondary"
                         invisible="issue_type != 'issue' or state != 'confirmed'" />
 
-                    <field name="state" widget="statusbar"
+                    <field name="state" widget="statusbar" options="{'clickable': 1}"
                         statusbar_visible="draft,confirmed,returned" />
                 </header>
                     <notebook>

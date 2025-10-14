@@ -24,18 +24,43 @@
     <field name="arch" type="xml">
         <form>
             <header>
-            <button name="print_issued_books_report"
-                    type="object"
-                    string="Print Issued Books"
-                    class="btn-primary"
-                    icon="fa-print"/>
-                    
-            <button name="action_send_welcome_email"
-            type="object"
-            string="Send Welcome Email"
-            class="btn-primary"
-            icon="fa-envelope"/>
-        
+                <!-- Confirm button -->
+                <button name="action_confirm"
+                        type="object"
+                        string="Confirm"
+                        class="btn btn-primary"
+                        invisible="state != 'draft'"/>
+
+                <!-- Cancel button -->
+                <button name="action_cancel"
+                        type="object"
+                        string="Cancel"
+                        class="btn btn-secondary"
+                        invisible="state not in ('draft','confirmed','approved')"/>
+
+                <!-- Reset to Draft button -->
+                <button name="action_reset_draft"
+                        type="object"
+                        string="Reset to Draft"
+                        class="btn btn-warning"
+                        invisible="state != 'cancelled'"/>
+
+                <!-- Statusbar -->
+                <field name="state" widget="statusbar" options="{'clickable': 1}"
+                    statusbar_visible="draft,confirmed,approved,cancelled"/>        
+
+                <button name="print_issued_books_report"
+                        type="object"
+                        string="Print Issued Books"
+                        class="btn-primary"
+                        icon="fa-print"/>
+
+                <button name="action_send_welcome_email"
+                type="object"
+                string="Send Welcome Email"
+                class="btn-primary"
+                icon="fa-envelope"/>
+
             </header>
 
             <sheet>
@@ -69,7 +94,7 @@
                         <group>
                             <field name="street"/>
                             <field name="city"/>
-                            <field name="state"/>
+                            <field name="state0" string="State"/>
                             <field name="zip_code"/>
                         </group>
                     </page>

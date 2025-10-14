@@ -41,9 +41,28 @@ class LibraryMember(models.Model):
 
     street = fields.Char(tracking=True)
     city = fields.Char(tracking=True)
-    state = fields.Char(tracking=True)
+    state0 = fields.Char(tracking=True)
     zip_code = fields.Char(tracking=True)
     photo = fields.Binary(string="Photo")
+    
+    state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirmed', 'Confirmed'),
+        ('cancelled', 'Cancelled'),
+    ], string="Status", default='draft', tracking=True)
+
+    # Button actions
+    def action_confirm(self):
+        for record in self:
+            record.state = 'confirmed'
+
+    def action_cancel(self):
+        for record in self:
+            record.state = 'cancelled'
+
+    def action_reset_draft(self):
+        for record in self:
+            record.state = 'draft'
 
     @api.depends('first_name', 'middle_name', 'last_name')
     def _compute_name(self):
@@ -75,4 +94,21 @@ class LibraryMember(models.Model):
         for member in self:
             if member.email:
                 template.send_mail(member.id, force_send=True)
- 
+
+
+class ChangeStateWizard(models.TransientModel):
+    _name = 'library.change.state.wizard'
+    _description = 'Change State Wizard'
+
+    new_state = fields.Selection([
+        ('draft', 'Draft'),
+        ('confirmed', 'Confirmed'),
+        ('approved', 'Approved'),
+        ('cancelled', 'Cancelled'),
+    ], string="New State", required=True)
+
+    def action_change_state(self):
+        active_id = self.env.context.get('active_id')
+        if active_id:
+            record = self.env['library.member'].browse(active_id)
+            record.state = self.new_state
