@@ -1,6 +1,6 @@
 <odoo>
     <!-- Top-level Menu -->
-    <menuitem id="menu_library_root" name="Library Management" sequence="10"/>
+    <menuitem id="menu_library_root" name="Library Management"  web_icon="library_management,static/description/icon.png" sequence="10"/>
 
     <!-- Submenus -->
     <menuitem id="menu_library_books" name="Books" parent="menu_library_root" action="action_library_book" sequence="1"/>
